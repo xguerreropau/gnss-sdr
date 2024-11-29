@@ -15,18 +15,9 @@ jobs:
     environment: empty
     steps:
       - name: Populate the SDK for the raspberrypi 5
-        shell: sh
+        shell: bash
         run: |
-          set -x
-          echo $PATH
-          env |grep BB
-          env | grep -E "BBPATH|OEROOT"
-          unset BBPATH
-          unset OEROOT
           pwd
-          env | grep -E "BBPATH|OEROOT"
-          env -i bash --noprofile --norc
-          env | grep -E "BBPATH|OEROOT"
           cd ~/oe-repo
           TEMPLATECONF=$(pwd)/meta-gnss-sdr/conf/templates/default source ./oe-core/oe-init-build-env ./build ./bitbake
           MACHINE=raspberrypi5 bitbake -c populate_sdk gnss-sdr-dev-image
