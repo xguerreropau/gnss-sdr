@@ -17,7 +17,6 @@ jobs:
         shell: bash
         run: |
           pwd
-          pyenv global system
           rm -rf ~/raspberrypi-sdk || true
           cd ~/oe-repo
           TEMPLATECONF=$(pwd)/meta-gnss-sdr/conf/templates/default source ./oe-core/oe-init-build-env ./build ./bitbake
