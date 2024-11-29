@@ -35,6 +35,7 @@ jobs:
       - name: Cross-compile gnss-sdr for the raspberrypi 5
         run: |
           env
+          unset LD_LIBRARY_PATH
           . ~/raspberrypi-sdk/environment-setup-cortexa76-geniux-linux
           env|grep -e "^LD" -e "^CC" -e "^AR"
           cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchains/oe-sdk_cross.cmake -DCMAKE_INSTALL_PREFIX=/usr
