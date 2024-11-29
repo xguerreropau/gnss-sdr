@@ -17,7 +17,7 @@ jobs:
         shell: bash
         run: |
           pwd
-          rm -rf ~/raspberrypi-sdk || true
+          #rm -rf ~/raspberrypi-sdk || true
           cd ~/oe-repo
           TEMPLATECONF=$(pwd)/meta-gnss-sdr/conf/templates/default source ./oe-core/oe-init-build-env ./build ./bitbake
           MACHINE=raspberrypi5 bitbake -c populate_sdk gnss-sdr-dev-image
@@ -33,8 +33,8 @@ jobs:
           fetch-depth: 0
           
       - name: Cross-compile gnss-sdr for the raspberrypi 5
-        shell: bash
         run: |
+          env
           . ~/raspberrypi-sdk/environment-setup-cortexa76-geniux-linux
           env|grep -e "^LD" -e "^CC" -e "^AR"
           cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchains/oe-sdk_cross.cmake -DCMAKE_INSTALL_PREFIX=/usr
