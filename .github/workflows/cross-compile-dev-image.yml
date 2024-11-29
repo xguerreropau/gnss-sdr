@@ -16,13 +16,12 @@ jobs:
  
     steps:
       - name: Cross-compile gnss-sdr-dev-image for the raspberrypi 5
+        shell: bash
         run: |
           pwd
           ls -las
-          rm -rf $GITHUB_WORKSPACE/*
-          env
-          mkdir -p oe-repo
-          cd oe-repo
+          mkdir -p ~/oe-repo
+          cd ~/oe-repo
           git config --global color.ui false
           repo init -v -u https://github.com/carlesfernandez/oe-gnss-sdr-manifest.git -b scarthgap
           repo sync
