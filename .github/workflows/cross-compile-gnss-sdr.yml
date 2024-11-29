@@ -15,7 +15,7 @@ jobs:
  
     steps:
       - name: Populate the SDK for the raspberrypi 5
-        shell: bash
+        shell: sh
         run: |
           set -x
           echo $PATH
@@ -25,7 +25,7 @@ jobs:
           unset OEROOT
           pwd
           env | grep -E "BBPATH|OEROOT"
-          env -i bash
+          env -i bash --noprofile --norc
           env | grep -E "BBPATH|OEROOT"
           cd ~/oe-repo
           TEMPLATECONF=$(pwd)/meta-gnss-sdr/conf/templates/default source ./oe-core/oe-init-build-env ./build ./bitbake
