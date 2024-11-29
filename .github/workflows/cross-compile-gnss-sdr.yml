@@ -10,13 +10,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  cross-compile-geniux:
+  cross-compile-gnss-sdr:
     runs-on: self-hosted
  
     steps:
       - name: Populate the SDK for the raspberrypi 5
         run: |
           pwd
+          env -i bash
           cd ~/oe-repo
           TEMPLATECONF=$(pwd)/meta-gnss-sdr/conf/templates/default source ./oe-core/oe-init-build-env ./build ./bitbake
           MACHINE=raspberrypi5 bitbake -c populate_sdk gnss-sdr-dev-image
@@ -33,6 +34,7 @@ jobs:
           
       - name: Cross-compile gnss-sdr for the raspberrypi 5
         run: |
+          env -i bash        
           . ~/raspberrypi-sdk/environment-setup-cortexa76-geniux-linux
           env|grep -e "^LD" -e "^CC" -e "^AR"
           cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchains/oe-sdk_cross.cmake -DCMAKE_INSTALL_PREFIX=/usr
