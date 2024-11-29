@@ -1,0 +1,29 @@
+name: Cross-compile the SD image for a Raspberry Pi 5
+
+on:
+  #push:
+  #  branches: [ "main" ]
+  #pull_request:
+  #  branches: [ "main" ]
+    
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  cross-compile-geniux:
+    runs-on: self-hosted
+ 
+    steps:
+      - name: Cross-compile gnss-sdr-dev-image for the raspberrypi 5
+        run: |
+          pwd
+          ls -las
+          rm -rf $GITHUB_WORKSPACE/*
+          mkdir -p oe-repo
+          cd oe-repo
+          repo init -u https://github.com/carlesfernandez/oe-gnss-sdr-manifest.git -b scarthgap
+          repo sync
+          TEMPLATECONF=$(pwd)/meta-gnss-sdr/conf/templates/default source ./oe-core/oe-init-build-env ./build ./bitbake
+          echo 'IMAGE_FSTYPES += " wic.gz"' >> conf/local.conf
+          MACHINE=raspberrypi5 bitbake gnss-sdr-dev-image
+
