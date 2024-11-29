@@ -1,0 +1,39 @@
+name: Cross-compile the SD image for a Raspberry Pi 5
+
+on:
+  #push:
+  #  branches: [ "main" ]
+  #pull_request:
+  #  branches: [ "main" ]
+    
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  cross-compile-geniux:
+    runs-on: self-hosted
+ 
+    steps:
+      - name: Populate the SDK for the raspberrypi 5
+        run: |
+          pwd
+          cd ~/oe-repo
+          TEMPLATECONF=$(pwd)/meta-gnss-sdr/conf/templates/default source ./oe-core/oe-init-build-env ./build ./bitbake
+          MACHINE=raspberrypi5 bitbake -c populate_sdk gnss-sdr-dev-image
+          tmp-glibc/deploy/sdk/geniux-x86_64-gnss-sdr-dev-image-raspberrypi5-toolchain-scarthgap-24.02.1.sh -y -d ~/raspberrypi-sdk
+
+      - name: Clone gnss-sdr with submodules
+        uses: actions/checkout@v4
+        with:
+          repository: 'gnss-sdr/gnss-sdr'
+          path: gnss-sdr
+          ref: next
+          submodules: recursive
+          fetch-depth: 0
+          
+      - name: Cross-compile gnss-sdr for the raspberrypi 5
+        run: |
+          . ~/raspberrypi-sdk/environment-setup-cortexa76-geniux-linux
+          env|grep -e "^LD" -e "^CC" -e "^AR"
+          cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchains/oe-sdk_cross.cmake -DCMAKE_INSTALL_PREFIX=/usr
+          cmake --build build -j
