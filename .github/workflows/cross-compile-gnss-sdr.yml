@@ -12,12 +12,12 @@ on:
 jobs:
   cross-compile-gnss-sdr:
     runs-on: self-hosted
-    environment: empty
     steps:
       - name: Populate the SDK for the raspberrypi 5
         shell: bash
         run: |
           pwd
+          rm -rf ~/raspberrypi-sdk || true
           cd ~/oe-repo
           TEMPLATECONF=$(pwd)/meta-gnss-sdr/conf/templates/default source ./oe-core/oe-init-build-env ./build ./bitbake
           MACHINE=raspberrypi5 bitbake -c populate_sdk gnss-sdr-dev-image
