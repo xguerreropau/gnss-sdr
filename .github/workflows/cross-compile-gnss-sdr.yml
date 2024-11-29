@@ -18,6 +18,8 @@ jobs:
         shell: bash
         run: |
           set -x
+          echo $PATH
+          env |grep BB
           env | grep -E "BBPATH|OEROOT"
           unset BBPATH
           unset OEROOT
