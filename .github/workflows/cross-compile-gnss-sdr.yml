@@ -12,7 +12,7 @@ on:
 jobs:
   cross-compile-gnss-sdr:
     runs-on: self-hosted
- 
+    environment: empty
     steps:
       - name: Populate the SDK for the raspberrypi 5
         shell: sh
