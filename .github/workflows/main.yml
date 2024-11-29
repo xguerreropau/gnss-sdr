@@ -3,12 +3,12 @@
 name: Simple CI
 
 on:
-  pull_request:
-    paths-ignore:
-      - "**/CITATION.cff"
-  push:
-    paths-ignore:
-      - "**/CITATION.cff"
+  #pull_request:
+  #  paths-ignore:
+  #    - "**/CITATION.cff"
+  #push:
+  #  paths-ignore:
+  #    - "**/CITATION.cff"
   workflow_dispatch:
 
 jobs:
