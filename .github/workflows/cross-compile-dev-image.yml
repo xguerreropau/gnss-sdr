@@ -21,7 +21,8 @@ jobs:
           rm -rf $GITHUB_WORKSPACE/*
           mkdir -p oe-repo
           cd oe-repo
-          repo init -u https://github.com/carlesfernandez/oe-gnss-sdr-manifest.git -b scarthgap
+          git config --global color.ui false
+          repo init -v -u https://github.com/carlesfernandez/oe-gnss-sdr-manifest.git -b scarthgap
           repo sync
           TEMPLATECONF=$(pwd)/meta-gnss-sdr/conf/templates/default source ./oe-core/oe-init-build-env ./build ./bitbake
           echo 'IMAGE_FSTYPES += " wic.gz"' >> conf/local.conf
