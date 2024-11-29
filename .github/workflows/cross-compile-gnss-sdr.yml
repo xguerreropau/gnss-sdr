@@ -17,13 +17,14 @@ jobs:
         shell: bash
         run: |
           pwd
+          pyenv global 3.11.9
           rm -rf ~/raspberrypi-sdk || true
           cd ~/oe-repo
           TEMPLATECONF=$(pwd)/meta-gnss-sdr/conf/templates/default source ./oe-core/oe-init-build-env ./build ./bitbake
           MACHINE=raspberrypi5 bitbake -c populate_sdk gnss-sdr-dev-image
           tmp-glibc/deploy/sdk/geniux-x86_64-gnss-sdr-dev-image-raspberrypi5-toolchain-scarthgap-24.02.1.sh -y -d ~/raspberrypi-sdk
 
-      - name: Clone gnss-sdr with submodules
+      - name: Clone gnss-sdr
         uses: actions/checkout@v4
         with:
           repository: 'gnss-sdr/gnss-sdr'
