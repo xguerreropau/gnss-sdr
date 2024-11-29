@@ -39,3 +39,6 @@ jobs:
           env|grep -e "^LD" -e "^CC" -e "^AR"
           cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchains/oe-sdk_cross.cmake -DCMAKE_INSTALL_PREFIX=/usr
           cmake --build build -j
+          sshfs root@10.1.3.134:/ /mnt/sdimage2
+          cmake --install build/ --prefix /mnt/sdimage2/
+          umount /mnt/sdimage2
