@@ -1,0 +1,20 @@
+name: Test GNSS-SDR in a Raspberry Pi 5
+
+on:
+  workflow_dispatch:
+
+jobs:
+  cross-compile-gnss-sdr:
+    runs-on: self-hosted
+    steps:         
+      - name: Test gnss-sdr in the Raspberrypi 5
+        run: |
+            ssh root@10.1.3.134 gnss-sdr-tests/run_tests --gtest_color=no --gtest_output=json --gtest_filter="ReedSolomonE1BTest*"
+            rsync -av root@10.1.3.134:/home/root/gnss-sdr-tests/test_detail.json .
+
+      - name: Upload Test Report
+        uses: dorny/test-reporter@v1
+        with:
+          name: Test Results
+          path: test_detail.json
+          reporter: json
