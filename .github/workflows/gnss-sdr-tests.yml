@@ -33,7 +33,7 @@ jobs:
         with:
           name: JUnit Test Results
           path: test_detail.xml
-          reporter: junit
+          reporter: java-junit
           working-directory: /home/xavier/actions-runner/_work/gnss-sdr/gnss-sdr/gnss-sdr/
       
       #- name: Parse and Display Test Results
