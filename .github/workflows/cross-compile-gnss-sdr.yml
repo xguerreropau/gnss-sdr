@@ -1,28 +1,12 @@
 name: Cross-compile GNSS-SDR for a Raspberry Pi 5
 
 on:
-  #push:
-  #  branches: [ "main" ]
-  #pull_request:
-  #  branches: [ "main" ]
-    
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
   cross-compile-gnss-sdr:
     runs-on: self-hosted
     steps:
-      - name: Populate the SDK for the raspberrypi 5
-        shell: bash
-        run: |
-          pwd
-          #rm -rf ~/raspberrypi-sdk || true
-          cd ~/oe-repo
-          TEMPLATECONF=$(pwd)/meta-gnss-sdr/conf/templates/default source ./oe-core/oe-init-build-env ./build ./bitbake
-          MACHINE=raspberrypi5 bitbake -c populate_sdk gnss-sdr-dev-image
-          tmp-glibc/deploy/sdk/geniux-x86_64-gnss-sdr-dev-image-raspberrypi5-toolchain-scarthgap-24.02.1.sh -y -d ~/raspberrypi-sdk
-
       - name: Clone gnss-sdr
         uses: actions/checkout@v4
         with:
