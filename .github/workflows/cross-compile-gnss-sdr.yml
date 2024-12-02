@@ -39,7 +39,7 @@ jobs:
           . ~/raspberrypi-sdk/environment-setup-cortexa76-geniux-linux
           env|grep -e "^LD" -e "^CC" -e "^AR"
           cd gnss-sdr
-          cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchains/oe-sdk_cross.cmake -DCMAKE_INSTALL_PREFIX=/usr
+          cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchains/oe-sdk_cross.cmake -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_SYSTEM_TESTING=ON
           cmake --build build -j
           sshfs root@10.1.3.134:/ /mnt/sdimage2
           cmake --install build/ --prefix /mnt/sdimage2/
