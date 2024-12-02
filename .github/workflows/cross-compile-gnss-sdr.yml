@@ -48,4 +48,5 @@ jobs:
           cmake --build build -j
           sshfs root@10.1.3.134:/ /mnt/sdimage2
           cmake --install build/ --prefix /mnt/sdimage2/
+          rsync -av build-test/tests/ /mnt/sdimage2/home/root/gnss-sdr-tests
           umount /mnt/sdimage2
