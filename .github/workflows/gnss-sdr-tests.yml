@@ -21,12 +21,13 @@ jobs:
             ssh root@10.1.3.134 gnss-sdr-tests/run_tests --gtest_color=no --gtest_output=xml --gtest_filter="ReedSolomonE1BTest*"
             rsync -av root@10.1.3.134:/home/root/test_detail.xml /home/xavier/actions-runner/_work/gnss-sdr/gnss-sdr/gnss-sdr/
 
-      - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action/linux@v2
-        if: always()
+      - name: Upload JUnit Results
+        uses: dorny/test-reporter@v1
         with:
-          files: |
-            test_detail.xml
+          name: JUnit Test Results
+          path: test_detail.xml
+          reporter: junit
+
       
       #- name: Parse and Display Test Results
       #  run: |
