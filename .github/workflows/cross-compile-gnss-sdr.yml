@@ -1,7 +1,14 @@
 name: Cross-compile GNSS-SDR for a Raspberry Pi 5
 
 on:
+  # Run after the cross-compilation of the GNSS-SDR is finished
+  workflow_run:
+    workflows: ["Cross-compile the SD image for a Raspberry Pi 5"] 
+    types:
+      - completed  
+    
   workflow_dispatch:
+     
 
 jobs:
   cross-compile-gnss-sdr:
