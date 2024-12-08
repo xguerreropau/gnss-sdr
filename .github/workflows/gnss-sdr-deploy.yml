@@ -1,0 +1,30 @@
+name: Deploy the image and GNSS-SDR in a Raspberry Pi 5
+
+on:
+  workflow_run:
+    workflows: ["Cross-compile GNSS-SDR for a Raspberry Pi 5"] 
+    types:
+      - completed  # Run after the cross-compilation is finished
+    
+  workflow_dispatch:
+
+jobs:
+  cross-compile-geniux:
+    runs-on: self-hosted
+ 
+    steps:
+      - name: Clone ansible-scripts
+        uses: actions/checkout@v4
+        with:
+          repository: 'xguerreropau/gnss-sdr-ansible'
+          path: gnss-sdr-ansible
+          
+      - name: Deploy the linux image for the raspberrypi 5
+        shell: bash
+        run: |
+             source /home/xavier/test-ansible/ansible-venv/bin/activate
+             ansible-playbook -v -i inventory.ini create-minimal-partition.yml
+             ansible-playbook -v -i inventory.ini -e “part_boot=/dev/mmcblk0p3” boot.yml
+             ansible-playbook -v -i inventory.ini create-gnss-sdr-partition.yml
+             ansible-playbook -v -i inventory.ini -e “part_boot=/dev/mmcblk0p2” boot.yml
+             
