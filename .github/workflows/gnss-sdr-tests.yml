@@ -1,6 +1,12 @@
 name: Test GNSS-SDR in a Raspberry Pi 5
 
 on:
+  # Run after the deployment of the GNSS-SDR is finished
+  workflow_run:
+    workflows: ["Deploy the image and GNSS-SDR in a Raspberry Pi 5"] 
+    types:
+      - completed  
+
   workflow_dispatch:
 
 jobs:
@@ -13,21 +19,12 @@ jobs:
           repository: 'gnss-sdr/gnss-sdr'
           path: gnss-sdr
           ref: next
-          submodules: recursive
-          fetch-depth: 0
           
       - name: Test gnss-sdr in the Raspberrypi 5
         run: |
             ssh root@10.1.3.134 gnss-sdr-tests/run_tests --gtest_color=no --gtest_output=xml --gtest_filter="ReedSolomonE1BTest*"
             rsync -av root@10.1.3.134:/home/root/test_detail.xml /home/xavier/actions-runner/_work/gnss-sdr/gnss-sdr/gnss-sdr/
-
-      - name: Create test summary
-        uses: test-summary/action@dist
-        with:
-          paths: /home/xavier/actions-runner/_work/gnss-sdr/gnss-sdr/gnss-sdr/test_detail.xml
-        if: always()
-
-        
+       
       - name: Upload JUnit Results
         uses: phoenix-actions/test-reporting@v8
         id: test-report               # Set ID reference for step
@@ -38,24 +35,6 @@ jobs:
           reporter: java-junit
           working-directory: /home/xavier/actions-runner/_work/gnss-sdr/gnss-sdr/gnss-sdr/
       
-      #- name: Parse and Display Test Results
-      #  run: |
-      #    pwd
-      #    ls -las
-      #    # Parse the JSON
-      #    suite=$(jq -r '.testsuites[].name' test_detail.json)
-      #    total=$(jq -r '.tests' test_detail.json)
-      #    passed=$(jq -r '[.testsuites[].testsuite[] | select(.result == "COMPLETED")]|length' test_detail.json)
-      #    failed=$(jq -r '.testsuites[].failures' test_detail.json)
-      #    errors=$(jq -r '.testsuites[].errors' test_detail.json)
-
-      #   echo "Test Suite: $suite"
-      #   echo "Total Tests: $total"
-      #   echo "Passed: $passed"
-      #   echo "Failed: $failed"
-
-      #    if [ "$failed" -gt 0 ]; then
-      #      echo "Error Details:"
       #      echo "$errors" | jq -r '.[] | "Test: \(.test), Message: \(.message)"'
       #    fi
 
