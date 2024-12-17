@@ -22,19 +22,40 @@ jobs:
           
       - name: Test gnss-sdr in the Raspberrypi 5
         run: |
-            ssh root@10.1.3.134 gnss-sdr-tests/run_tests --gtest_color=no --gtest_output=xml --gtest_filter="ReedSolomonE1BTest*"
+            ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" root@10.1.3.134 gnss-sdr-tests/run_tests --gtest_color=no --gtest_output=xml --gtest_filter="ReedSolomonE1BTest*"
             rsync -av root@10.1.3.134:/home/root/test_detail.xml /home/xavier/actions-runner/_work/gnss-sdr/gnss-sdr/gnss-sdr/
        
       - name: Upload JUnit Results
         uses: phoenix-actions/test-reporting@v8
-        id: test-report               # Set ID reference for step
+        id: test-report             
         if: always()
         with:
           name: JUnit Tests
           path: test_detail.xml
           reporter: java-junit
           working-directory: /home/xavier/actions-runner/_work/gnss-sdr/gnss-sdr/gnss-sdr/
-      
-      #      echo "$errors" | jq -r '.[] | "Test: \(.test), Message: \(.message)"'
-      #    fi
+
+      - name: Load test report history
+        uses: actions/checkout@v4
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Build test report
+        uses: simple-elf/allure-report-action@v1.10
+        if: always()
+        with:
+          gh_pages: gh-pages
+          allure_history: allure-history
+          allure_results: build/allure-results
+
+      - name: Publish test report
+        uses: peaceiris/actions-gh-pages@v4
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history      
 
