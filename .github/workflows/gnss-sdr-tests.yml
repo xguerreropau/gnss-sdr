@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  cross-compile-gnss-sdr:
+  test-gnss-sdr:
     runs-on: self-hosted
     steps:         
       - name: Clone gnss-sdr
