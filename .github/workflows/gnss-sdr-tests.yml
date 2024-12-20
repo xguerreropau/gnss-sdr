@@ -23,7 +23,7 @@ jobs:
 
       - name: Test gnss-sdr in the Raspberrypi 5
         run: |
-            ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" root@10.1.3.134 "gnss-sdr-tests/run_tests || true"
+            ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" root@10.1.3.134 "gnss-sdr-tests/run_tests --gtest_color=no --gtest_output=xml || true"
             rsync -av root@10.1.3.134:/home/root/test-results/* allure-results/
 
       - name: Build test report
