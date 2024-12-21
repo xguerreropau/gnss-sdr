@@ -3,7 +3,7 @@ name: Test TTFF GNSS-SDR in a Raspberry Pi 5
 on:
   # Run every day at midnight
   schedule:
-    - cron: '37 16 * * *'
+    - cron: '22 19 * * *'
 
   workflow_dispatch:
 
