@@ -21,7 +21,7 @@ jobs:
 
       - name: Test TTFF gnss-sdr in the Raspberrypi 5
         run: |
-            ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" root@10.1.3.134 "gnss-sdr-tests/ttff --num_measurements 3200 --config_file_ttff gnss-sdr-tests/test-osmo.conf --gtest_color=no --gtest_output=xml:test-results/ || true"
+            ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" root@10.1.3.134 "gnss-sdr-tests/ttff --num_measurements 12800 --config_file_ttff gnss-sdr-tests/test-osmo.conf --gtest_color=no --gtest_output=xml:test-results/ || true"
             rsync -av root@10.1.3.134:/home/root/test-results/* allure-results/
 
       - name: Build test report
